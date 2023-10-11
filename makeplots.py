@@ -7,10 +7,8 @@ import streamlit as st  # 🎈 data web app development
 
 dataset_url = "https://raw.githubusercontent.com/Lexie88rus/bank-marketing-analysis/master/bank.csv"
 
-def load_data_once_daily(url):
-    @st.cache_data
-    def get_data() -> pd.DataFrame:
-        return pd.read_csv(url)
+def get_data(url) -> pd.DataFrame:
+    return pd.read_csv(url)
 
 def plot_data(df):
     # top-level filters
@@ -89,8 +87,7 @@ def main():
     st.title("Real-Time / Live Data Science Dashboard")
 
     # Get annotations from DB
-    load_data_once_daily(dataset_url)
-    df = get_data()
+    df = get_data(dataset_url)
 
     plot_data(df)
 

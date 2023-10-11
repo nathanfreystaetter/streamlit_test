@@ -8,7 +8,7 @@ import streamlit as st  # 🎈 data web app development
 dataset_url = "https://raw.githubusercontent.com/Lexie88rus/bank-marketing-analysis/master/bank.csv"
 
 def load_data_once_daily(url):
-    @st.experimental_memo
+    @st.cache_data
     def get_data() -> pd.DataFrame:
         return pd.read_csv(url)
 
@@ -23,7 +23,7 @@ def plot_data(df):
     df = df[df["job"] == job_filter]
 
     # near real-time / live feed simulation
-    for seconds in range(200):
+    for seconds in range(20):
 
         df["age_new"] = df["age"] * np.random.choice(range(1, 5))
         df["balance_new"] = df["balance"] * np.random.choice(range(1, 5))
@@ -89,7 +89,8 @@ def main():
     st.title("Real-Time / Live Data Science Dashboard")
 
     # Get annotations from DB
-    df = load_data_once_daily(dataset_url)
+    load_data_once_daily(dataset_url)
+    df = get_data()
 
     plot_data(df)
 
